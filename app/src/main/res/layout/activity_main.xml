@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.caneru.lyrecase.ui.view.OverlayImageView
-        android:id="@+id/oiv_image"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:image="@drawable/baboon"
-        app:layout_constraintBottom_toTopOf="@id/iv_overlay"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.MainActivity">
 
-    <ImageView
-        android:id="@+id/iv_overlay"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/oiv_image" />
+        <com.caneru.lyrecase.ui.view.OverlayImageView
+            android:id="@+id/oiv_image"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:image="@drawable/baboon"
+            app:layout_constraintBottom_toTopOf="@id/rv_overlay_previews"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_overlay_previews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/oiv_image" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

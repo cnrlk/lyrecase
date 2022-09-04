@@ -1,46 +1,37 @@
 package com.caneru.lyrecase.ui
 
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.caneru.lyrecase.R
-import com.caneru.lyrecase.ui.view.OverlayImageView
+import com.caneru.lyrecase.databinding.ActivityMainBinding
+import com.caneru.lyrecase.ui.widget.OverlayPreviewRecyclerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val mainViewModel by viewModels<MainViewModel>()
-
+    private lateinit var activityMainBinding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        mainViewModel.fetchOverlays { setOverlay() }
-    }
+        activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        mainViewModel.fetchOverlays(this)
+        activityMainBinding.rvOverlayPreviews.adapter = mainViewModel.getAdapter()
+        activityMainBinding.rvOverlayPreviews.layoutManager =
+            LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
 
-    fun setOverlay() {
-        val overlayImageView = findViewById<ImageView>(R.id.iv_overlay)
-        Glide.with(baseContext).asBitmap().load(
-            mainViewModel.getOverlays()[0].overlayPreviewIconUrl
-        ).into(overlayImageView)
-        Glide.with(baseContext).asBitmap().load(
-            mainViewModel.getOverlays()[0].overlayUrl
-        ).into(object : CustomTarget<Bitmap>() {
-            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                findViewById<OverlayImageView>(R.id.oiv_image).setOverlayImage(resource)
-            }
-
-            override fun onLoadCleared(placeholder: Drawable?) {
-                // Nothing
-            }
-        })
-
+        mainViewModel.previewOverlayBitmaps.observeForever {
+            val adapter = (activityMainBinding.rvOverlayPreviews.adapter as OverlayPreviewRecyclerAdapter)
+            adapter.addItems(it, mainViewModel.previewOverlayNames.value!!.toList())
+            adapter.notifyDataSetChanged()
+        }
+        mainViewModel.selectedOverlay.observeForever{
+            activityMainBinding.oivImage.setOverlayImage(it)
+        }
     }
 
 }
