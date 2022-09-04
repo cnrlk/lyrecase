@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
@@ -87,22 +86,18 @@ class OverlayImageView @JvmOverloads constructor(
         if (event != null) {
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    Log.d("CANERUU", "start drag")
                     start = PointF(event.x, event.y)
                     editMode = event.action
                 }
                 MotionEvent.ACTION_POINTER_2_DOWN -> {
-                    Log.d("CANERUU", "start scale")
                     start = PointF(event.x, event.y)
                     editMode = event.action
                 }
                 MotionEvent.ACTION_MOVE -> {
                     if (editMode == MotionEvent.ACTION_DOWN) {
-                        Log.d("CANERUU", "dragging")
                         mOverlayMatrix.postTranslate((event.x - start.x), (event.y - start.y))
                         start = PointF(event.x, event.y)
                     } else if (editMode == MotionEvent.ACTION_POINTER_2_DOWN) {
-                        Log.d("CANERUU", "scaling")
                         val scale = PointF(event.x, event.y)
                         mOverlayMatrix.postScale(
                             scale.length() / start.length(),
@@ -119,5 +114,20 @@ class OverlayImageView @JvmOverloads constructor(
         }
         invalidate()
         return true
+    }
+
+    fun getFinalBitmap(): Bitmap? {
+        if (overlayImage != null && backgroundImage != null) {
+            val finalBitmap = Bitmap.createBitmap(
+                backgroundImage!!.width,
+                backgroundImage!!.height,
+                backgroundImage!!.config
+            )
+            val canvas = Canvas(finalBitmap)
+            canvas.drawBitmap(backgroundImage!!, mMatrix, null)
+            canvas.drawBitmap(overlayImage!!, mOverlayMatrix, null)
+            return finalBitmap
+        }
+        return null
     }
 }
