@@ -7,8 +7,22 @@
     tools:context=".ui.MainActivity">
 
     <com.caneru.lyrecase.ui.view.OverlayImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:image="@drawable/baboon"/>
+        android:id="@+id/oiv_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:image="@drawable/baboon"
+        app:layout_constraintBottom_toTopOf="@id/iv_overlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_overlay"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/oiv_image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

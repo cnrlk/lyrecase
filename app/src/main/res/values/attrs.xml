@@ -3,5 +3,6 @@
 
     <declare-styleable name="OverlayImageView">
         <attr name="image" format="reference"/>
+        <attr name="overlayImage" format="reference"/>
     </declare-styleable>
 </resources>

@@ -16,15 +16,20 @@ class MainViewModel @Inject constructor(
 
     private lateinit var overlays: List<Overlay>
 
-    fun getOverlays() {
+    fun fetchOverlays(onSuccess: () -> Unit = {}) {
         viewModelScope.launch {
             val response = dataRepository.getOverlays()
             if (response.isSuccessful) {
                 overlays = response.body() ?: listOf()
                 Log.d("caneru", response.body().toString())
+                onSuccess()
             } else {
                 Log.d("caneru", response.errorBody().toString())
             }
         }
+    }
+
+    fun getOverlays(): List<Overlay> {
+        return overlays
     }
 }
