@@ -1,4 +1,4 @@
-package com.caneru.lyrecase
+package com.caneru.lyrecase.ui
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
